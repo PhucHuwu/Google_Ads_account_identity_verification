@@ -38,7 +38,7 @@ def account_verification(idx, account_id, name_account):
     csv2 = f'{idx + 1}_(1).csv'
 
     if not os.path.exists(csv1) or not os.path.exists(csv2):
-        print("Hãy đảm bảo 2 file excel tồn tại")
+        print(f"Hãy đảm bảo 2 file excel của luồng {idx + 1} tồn tại")
         time.sleep(180)
         exit()
     else:
