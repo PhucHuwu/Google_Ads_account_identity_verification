@@ -52,7 +52,7 @@ def account_verification(idx, account_id, name_account):
     name_customer_list = df1['Tài khoản'].tolist() + df2['Tài khoản'].tolist()
     # ------------------------------------------------------------------------------------------------------------------
     options = uc.ChromeOptions()
-    profile_directory = f"Profile_{name_account}"
+    profile_directory = f"Profile_{idx + 1}_{name_account}"
     if not os.path.exists(profile_directory):
         os.makedirs(profile_directory)
 
@@ -70,7 +70,7 @@ def account_verification(idx, account_id, name_account):
     screen_height = screen_size.height
     num_windows = len(list_account_id)
 
-    num_cols = 4
+    num_cols = (1 if num_windows <= 1 else (2 if num_windows <= 3 else 4))
     num_rows = num_windows // num_cols + (1 if num_windows % num_cols != 0 else 0)
     window_width = screen_width // num_cols
     window_height = screen_height // num_rows
