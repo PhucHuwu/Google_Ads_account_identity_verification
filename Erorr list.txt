@@ -7,7 +7,7 @@ Lỗi 3: Lỗi này gặp khi icon tìm kiếm bị che khuất.
 Lỗi 4: Lỗi này gặp khi tên tài khoản xác minh có ký tự đặc biệt (chữ Nhật, Trung Quốc,...) hoặc không có tên.
 Lỗi 5: Lỗi này gặp khi web bị lag, lỗi này hiếm gặp.
 Lỗi 6: Lỗi này gặp khi web bị lag hoặc tài khoản cần xác minh chưa thiết lập phương thức thanh toán.
-Lỗi 7: Lỗi này rất phổ biến, gặp khi tài khoản xác đã được xác minh trước đó hoặc MCC đã bị chết.
+Lỗi 7: Lỗi này rất phổ biến, gặp khi tài khoản đã được xác minh trước đó hoặc MCC đã bị chết.
 Lỗi 8: Lỗi này là lỗi vặt, chưa xác định được khi nào thì bị.
 
 Lưu ý: Các lỗi 2, 3, 4, 5, 6, 7, 8 đều có thể sẽ xảy ra khi trang web bị lag.
