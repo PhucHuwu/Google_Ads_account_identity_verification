@@ -1,0 +1,19 @@
+Danh sách các lỗi của chương trình xác minh tài khoản:
+
+Lỗi 0: Lỗi này gặp khi không thể tạo profile Chrome, lỗi này hiếm.
+Lỗi 1: Lỗi này gặp khi tài khoản Google chứa quá nhiều MCC, lỗi này hiếm.
+Lỗi 2: Lỗi này gặp khi icon mũi tên ở mục tìm kiếm bị che khuất.
+Lỗi 3: Lỗi này gặp khi icon tìm kiếm bị che khuất.
+Lỗi 4: Lỗi này gặp khi tên tài khoản xác minh có ký tự đặc biệt (chữ Nhật, Trung Quốc,...) hoặc không có tên.
+Lỗi 5: Lỗi này gặp khi web bị lag, lỗi này hiếm gặp.
+Lỗi 6: Lỗi này gặp khi web bị lag hoặc tài khoản cần xác minh chưa thiết lập phương thức thanh toán.
+Lỗi 7: Lỗi này gặp khi tài khoản xác đã được xác minh trước đó hoặc MCC đã bị chết.
+Lỗi 8: Lỗi này là lỗi vặt, chưa xác định được khi nào thì bị.
+
+Lưu ý: Các lỗi 2, 3, 4, 5, 6, 7, 8 đều có thể sẽ xảy ra khi trang web bị lag.
+
+Cách xử lý tạm thời các lỗi trên là dừng chương trình, tắt các tab Chrome cũ và chạy lại chương trình.
+Trong trường hợp chạy lại mà vẫn lỗi nghiêm trọng thì hãy xóa các profile và tiến hành đăng nhập lại.
+Lỗi 4 có cách sử lý riêng là xóa các file csv (excel csv) cũ và tiến hành tải lại file csv (excel csv) mới.
+
+p/s: Chương trình được làm bởi PhucHuwuDev.
