@@ -14,6 +14,6 @@ Lưu ý: Các lỗi 2, 3, 4, 5, 6, 7, 8 đều có thể sẽ xảy ra khi trang
 
 Cách xử lý tạm thời các lỗi trên là dừng chương trình, tắt các tab Chrome cũ và chạy lại chương trình.
 Trong trường hợp chạy lại mà vẫn lỗi nghiêm trọng thì hãy xóa các profile và tiến hành đăng nhập lại.
-Lỗi 4 có cách sử lý riêng là xóa các file csv cũ và tiến hành tải lại file csv mới.
+Lỗi 4 có cách xử lý riêng là xóa các file csv cũ và tiến hành tải lại file csv mới.
 
 p/s: Chương trình được làm bởi PhucHuwuDev.
