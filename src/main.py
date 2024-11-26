@@ -34,8 +34,8 @@ confirmation_received = threading.Event()
 
 
 def account_verification(idx, account_id, name_account):
-    csv1 = f'{idx + 1}.csv'
-    csv2 = f'{idx + 1}_(1).csv'
+    csv1 = f'excel/{idx + 1}.csv'
+    csv2 = f'excel/{idx + 1}_(1).csv'
 
     if not os.path.exists(csv1) or not os.path.exists(csv2):
         print(f"Hãy đảm bảo 2 file excel của luồng {idx + 1} tồn tại")
