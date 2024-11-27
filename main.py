@@ -70,15 +70,15 @@ def account_verification(idx, account_id, name_account):
     screen_height = screen_size.height
     num_windows = len(list_account_id)
 
-    num_cols = (1 if num_windows <= 1 else (2 if num_windows <= 3 else 4))
-    num_rows = num_windows // num_cols + (1 if num_windows % num_cols != 0 else 0)
+    num_cols = 10
+    num_rows = 1
     window_width = screen_width // num_cols
-    window_height = screen_height // num_rows
+    window_height = screen_height // num_rows // 2
     driver.set_window_size(window_width, window_height)
 
     row = idx // num_cols
     col = idx % num_cols
-    x_position = col * window_width
+    x_position = col * window_width // 2
     y_position = row * window_height
     driver.set_window_position(x_position, y_position)
     # ------------------------------------------------------------------------------------------------------------------
@@ -95,7 +95,7 @@ def account_verification(idx, account_id, name_account):
             print()
             continue
 
-        time.sleep(10)
+        time.sleep(5)
 
         try:
             click.auto_click(driver, config.arrow_drop_down_button_xpath, 30)
@@ -104,7 +104,7 @@ def account_verification(idx, account_id, name_account):
             print()
             continue
 
-        time.sleep(2)
+        time.sleep(3)
 
         try:
             click.auto_click(driver, config.search_button_xpath, 30)
@@ -211,6 +211,7 @@ threads = []
 for idx, (id, name) in enumerate(zip(list_account_id, list_account_name)):
     thread = threading.Thread(target=account_verification, args=(idx, id, name))
     thread.start()
+    time.sleep(1)
     threads.append(thread)
 
 start_program = input("Nhập 'ok' sau khi đã đăng nhập để bắt đầu quá trình xác minh tài khoản: ")
