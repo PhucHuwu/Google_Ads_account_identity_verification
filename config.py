@@ -1,4 +1,4 @@
-arrow_drop_down_button_xpath = "/html/body/div[1]/root/div/div[1]/awsm-app-bar/div/div[2]/deferred-mcc-nav/mcc-nav/div/mcc-nav-breadcrumb/div/div/material-icon/i"
+arrow_drop_down_button_xpath = '//material-icon[@icon="arrow_drop_down"]//i[text()="arrow_drop_down"]'
 search_button_xpath = "//*[@aria-label='Tìm kiếm khách hàng']"
 customer_button_xpath = '//*[@id="a07FF5EDD-B3BD-450C-8023-76DB09ED5E81--5"]/div/div[2]/div[2]/div/div/div[2]/awsm-customer-tree/div/div/awsm-customer-item/div/a'
 pay_button_xpath = "//sidebar-panel[@id='navigation.billing']//a[@title='Thanh toán']"
