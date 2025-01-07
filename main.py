@@ -65,7 +65,6 @@ def account_verification(idx, account_id, name_account):
     screen_size = pyautogui.size()
     screen_width = screen_size.width
     screen_height = screen_size.height
-    num_windows = len(list_account_id)
 
     num_cols = 10
     num_rows = 1
