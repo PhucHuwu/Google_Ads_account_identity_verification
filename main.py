@@ -21,7 +21,7 @@ if not os.path.exists('Account_id.csv'):
     df = pd.DataFrame(data)
     df.to_csv('Account_id.csv', index=False)
     print("File excel vừa được tạo, vui lòng thêm ID vào file excel")
-    print("*Lưu ý: 1 ID sẽ là 1 luồng, nhập tối đa 10 ID và các ID phải khác nhau")
+    print("*Lưu ý: 1 ID sẽ là 1 luồng, nhập tối đa 10 ID")
     time.sleep(10)
     exit()
 
