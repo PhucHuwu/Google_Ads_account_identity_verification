@@ -34,22 +34,19 @@ confirmation_received = threading.Event()
 
 
 def account_verification(idx, account_id, name_account):
-    csv1 = f'excel/{idx + 1}.csv'
-    csv2 = f'excel/{idx + 1}_(1).csv'
+    csv = f'excel/{idx + 1}.csv'
 
-    if not os.path.exists(csv1) or not os.path.exists(csv2):
-        print(f"Hãy đảm bảo 2 file excel của luồng {idx + 1} tồn tại")
+    if not os.path.exists(csv):
+        print(f"Hãy đảm bảo file excel của luồng {idx + 1} tồn tại")
         time.sleep(180)
         exit()
     else:
-        df1 = pd.read_csv(csv1)
-        df2 = pd.read_csv(csv2)
+        df = pd.read_csv(csv)
 
-    df1.columns = df1.columns.str.strip()
-    df2.columns = df2.columns.str.strip()
+    df.columns = df.columns.str.strip()
 
-    ma_khach_hang_list = df1['Mã khách hàng'].tolist() + df2['Mã khách hàng'].tolist()
-    name_customer_list = df1['Tài khoản'].tolist() + df2['Tài khoản'].tolist()
+    ma_khach_hang_list = df['Mã khách hàng'].tolist()
+    name_customer_list = df['Tài khoản'].tolist()
     # ------------------------------------------------------------------------------------------------------------------
     options = uc.ChromeOptions()
     profile_directory = f"Profile_{idx + 1}_{name_account}"
@@ -151,14 +148,10 @@ def account_verification(idx, account_id, name_account):
             print(f"Lỗi 7 ở luồng {idx + 1}")
             print()
 
-            if not df1.empty or len(df1) > 1:
-                df1 = df1.drop(index=0)
+            if not df.empty or len(df) > 1:
+                df = df.drop(index=0)
 
-            if not df2.empty or len(df2) > 1:
-                df2 = df2.drop(index=0)
-
-            df1 = pd.read_csv(csv1)
-            df2 = pd.read_csv(csv2)
+            df = pd.read_csv(csv)
             continue
 
         try:
@@ -179,27 +172,19 @@ def account_verification(idx, account_id, name_account):
             print(f"Lỗi 8 ở luồng {idx + 1}")
             print()
 
-            if not df1.empty or len(df1) > 1:
-                df1 = df1.drop(index=0)
+            if not df.empty or len(df) > 1:
+                df = df.drop(index=0)
 
-            if not df2.empty or len(df2) > 1:
-                df2 = df2.drop(index=0)
-
-            df1 = pd.read_csv(csv1)
-            df2 = pd.read_csv(csv2)
+            df = pd.read_csv(csv)
             continue
 
         print(f"Đã xác minh tài khoản {name_customer} ở luồng {idx + 1} thành công")
         print()
 
-        if not df1.empty or len(df1) > 1:
-            df1 = df1.drop(index=0)
+        if not df.empty or len(df) > 1:
+            df = df.drop(index=0)
 
-        if not df2.empty or len(df2) > 1:
-            df2 = df2.drop(index=0)
-
-        df1 = pd.read_csv(csv1)
-        df2 = pd.read_csv(csv2)
+        df = pd.read_csv(csv)
 
         time.sleep(15)
 
