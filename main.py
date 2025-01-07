@@ -63,18 +63,13 @@ def account_verification(idx, account_id, name_account):
     # ------------------------------------------------------------------------------------------------------------------
     screen_width = driver.execute_script("return window.screen.availWidth;")
     screen_height = driver.execute_script("return window.screen.availHeight;")
+    window_width = screen_width // 3
+    window_height = screen_height // 2
+    position_x = idx * window_width // 20
+    position_y = 0
 
-    num_cols = 10
-    num_rows = 1
-    window_width = screen_width // num_cols
-    window_height = screen_height // num_rows // 2
     driver.set_window_size(window_width, window_height)
-
-    row = idx // num_cols
-    col = idx % num_cols
-    x_position = col * window_width // 2
-    y_position = row * window_height
-    driver.set_window_position(x_position, y_position)
+    driver.set_window_position(position_x, position_y)
     # ------------------------------------------------------------------------------------------------------------------
     driver.get("https://ads.google.com/aw/overview")
     confirmation_received.wait()
