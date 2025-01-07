@@ -7,7 +7,6 @@ import time
 import threading
 import os
 import pandas as pd
-import pyautogui
 import click
 import config
 
@@ -62,9 +61,8 @@ def account_verification(idx, account_id, name_account):
             time.sleep(180)
             exit()
     # ------------------------------------------------------------------------------------------------------------------
-    screen_size = pyautogui.size()
-    screen_width = screen_size.width
-    screen_height = screen_size.height
+    screen_width = driver.execute_script("return window.screen.availWidth;")
+    screen_height = driver.execute_script("return window.screen.availHeight;")
 
     num_cols = 10
     num_rows = 1
