@@ -134,18 +134,23 @@ def account_verification(idx, account_id, name_account):
 
         time.sleep(5)
 
-        try:
+        try: #--------------------------------------------------------------------------------------------------------
             click.auto_click(driver, config.start_verification_button_xpath, 5)
         except Exception:
-            print(f"Lỗi 7 ở luồng {idx + 1}")
-            print()
+            try:
+                click.auto_click(driver, config.start_mission_button_xpath, 5)
+            except Exception:
+                print(f"Lỗi 7 ở luồng {idx + 1}")
+                print()
 
-            if not df.empty or len(df) > 1:
-                df = df.drop(index=0)
+                if not df.empty or len(df) > 1:
+                    df = df.drop(index=0)
 
-            df = pd.read_csv(csv)
-            continue
-
+                df = pd.read_csv(csv)
+                continue
+        
+        time.sleep(3)
+        
         try:
             click.auto_click(driver, config.check_box_1_xpath, 5)
         except Exception:
@@ -181,6 +186,7 @@ def account_verification(idx, account_id, name_account):
         time.sleep(15)
 
     print(f"Đã hoàn tất quá trình xác minh ở luồng {idx + 1}")
+    driver.quit()
 
 
 threads = []
