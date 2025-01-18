@@ -134,7 +134,7 @@ def account_verification(idx, account_id, name_account):
 
         time.sleep(5)
 
-        try: #--------------------------------------------------------------------------------------------------------
+        try:
             click.auto_click(driver, config.start_verification_button_xpath, 5)
         except Exception:
             try:
