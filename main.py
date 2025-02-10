@@ -164,7 +164,7 @@ def account_verification(idx, account_id, name_account):
             pass
 
         try:
-            click.auto_click(driver, config.save_and_continue_button_xpath, 10)
+            click.auto_click(driver, config.save_and_continue_button_xpath, 30)
         except Exception:
             print(f"Lỗi 8 ở luồng {idx + 1}")
             print()
@@ -183,7 +183,7 @@ def account_verification(idx, account_id, name_account):
 
         df = pd.read_csv(csv)
 
-        time.sleep(15)
+        time.sleep(30)
 
     print(f"Đã hoàn tất quá trình xác minh ở luồng {idx + 1}")
     driver.quit()
