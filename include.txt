@@ -1,4 +1,0 @@
-undetected_chromedriver
-selenium
-pandas
-pyautogui
