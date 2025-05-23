@@ -19,10 +19,10 @@ from screeninfo import get_monitors
 class GoogleAdsVerificationApp:
     # Thêm các biến class cho kích thước cửa sổ
     EXPANDED_WIDTH = 800
-    EXPANDED_HEIGHT = 510
+    EXPANDED_HEIGHT = 530
 
     COLLAPSED_WIDTH = 590
-    COLLAPSED_HEIGHT = 265
+    COLLAPSED_HEIGHT = 280
 
     def kill_existing_chrome_drivers():
         """Tìm và đóng tất cả các cửa sổ Chrome của undetected_chromedriver"""
@@ -706,9 +706,8 @@ class GoogleAdsVerificationApp:
         self.confirm_btn.config(state='disabled')
 
     def account_verification_thread(self, idx, account_id, name_account, chunk):
-        # Hàm xử lý xác minh tài khoản trong luồng riêng
         try:
-            # Thiết lập trình duyệt
+            # Setup Chrome
             options = uc.ChromeOptions()
             profile_directory = f"Profile_{idx + 1}_{name_account}"
             if not os.path.exists(profile_directory):
@@ -723,17 +722,13 @@ class GoogleAdsVerificationApp:
                     self.log_from_thread(f"Không thể khởi tạo Chromedriver ở luồng {idx + 1}, vui lòng update Chrome")
                     return
 
-            # Thiết lập kích thước và vị trí cửa sổ trên màn hình phụ
+            # Setup window position and size
             if self.secondary_monitor:
                 window_width = self.secondary_monitor.width // 3
                 window_height = self.secondary_monitor.height // 2
-                position_x = self.secondary_monitor.x + (idx * window_width // 20)
+                position_x = self.secondary_monitor.x + (idx * window_width // 20) - 1600
                 position_y = self.secondary_monitor.y
-
-                driver.set_window_size(window_width, window_height)
-                driver.set_window_position(position_x, position_y)
             else:
-                # Fallback nếu không có màn hình phụ
                 screen_width = driver.execute_script("return window.screen.availWidth;")
                 screen_height = driver.execute_script("return window.screen.availHeight;")
                 window_width = screen_width // 3
@@ -741,10 +736,10 @@ class GoogleAdsVerificationApp:
                 position_x = idx * window_width // 20
                 position_y = 0
 
-                driver.set_window_size(window_width, window_height)
-                driver.set_window_position(position_x, position_y)
+            driver.set_window_size(window_width, window_height)
+            driver.set_window_position(position_x, position_y)
 
-            # Mở trang đăng nhập
+            # Initialize verification
             driver.execute_script("document.body.style.zoom='100%'")
             driver.get("https://ads.google.com/aw/overview")
 
@@ -752,37 +747,25 @@ class GoogleAdsVerificationApp:
             if not self.login_checked.get():
                 self.log_from_thread(f"Luồng {idx + 1}: Vui lòng đăng nhập")
 
-            # Đợi xác nhận đăng nhập
+            # Wait for login confirmation
             self.confirmation_received.wait()
 
             if not self.is_running:
                 return
 
-            self.log("Đã xác nhận đăng nhập. Bắt đầu quá trình xác minh tài khoản.")
-            # Bắt đầu xác minh từng tài khoản
-            ma_khach_hang_list = chunk['Mã khách hàng'].tolist()
-            name_customer_list = chunk['Tài khoản'].tolist()
-            status_list = chunk['Trạng thái xác minh'].tolist()
-            total_accounts = len(ma_khach_hang_list)
-            processed = 0
-
-            for ma_khach_hang, name_customer, status in zip(ma_khach_hang_list, name_customer_list, status_list):
+            # Start verification process
+            for index, row in chunk.iterrows():
                 if not self.is_running:
                     return
 
-                # Skip if already verified
-                if status == 1:
-                    processed += 1
-                    self.update_progress(processed, total_accounts)
-                    continue
+                ma_khach_hang = row['Mã khách hàng']
+                name_customer = row['Tài khoản']
 
                 try:
                     driver.execute_script("document.body.style.zoom='50%'")
                     driver.get("https://ads.google.com/aw/overview")
 
-                    if not self.is_running:
-                        return
-
+                    # Select MCC account
                     try:
                         account_id_xpath = config.get_account_id_xpath(account_id)
                         click.auto_click(driver, account_id_xpath, 30)
@@ -790,9 +773,7 @@ class GoogleAdsVerificationApp:
                         self.log_from_thread(f"Luồng {idx + 1}: Không thể tìm thấy MCC, vui lòng kiểm tra ID {account_id}")
                         continue
 
-                    if not self.is_running:
-                        return
-
+                    # Open dropdown and search
                     driver.execute_script("document.body.style.zoom='50%'")
                     time.sleep(5)
 
@@ -802,9 +783,6 @@ class GoogleAdsVerificationApp:
                         self.log_from_thread(f"Luồng {idx + 1}: Không thể ấn vào icon mũi tên chỉ xuống")
                         continue
 
-                    if not self.is_running:
-                        return
-
                     time.sleep(3)
 
                     try:
@@ -813,12 +791,10 @@ class GoogleAdsVerificationApp:
                         self.log_from_thread(f"Luồng {idx + 1}: Không thể ấn vào icon kính lúp")
                         continue
 
-                    if not self.is_running:
-                        return
-
                     ActionChains(driver).send_keys(f"{ma_khach_hang}").perform()
                     time.sleep(3)
 
+                    # Select customer account
                     try:
                         customer_xpath = config.get_customer_name_xpath(name_customer)
                         element = WebDriverWait(driver, 30).until(
@@ -827,138 +803,110 @@ class GoogleAdsVerificationApp:
                         driver.execute_script("arguments[0].click();", element)
                     except Exception:
                         self.log_from_thread(f"Luồng {idx + 1}: Không tìm thấy tài khoản {name_customer}")
-                        processed += 1
-                        self.update_progress(processed, total_accounts)
                         continue
-
-                    if not self.is_running:
-                        return
 
                     time.sleep(5)
 
+                    # Navigate to verification
                     try:
                         click.auto_click(driver, config.pay_button_xpath, 30)
                     except Exception:
                         self.log_from_thread(f"Luồng {idx + 1}: Không thể truy cập vào mục thanh toán")
-                        processed += 1
-                        self.update_progress(processed, total_accounts)
                         continue
-
-                    if not self.is_running:
-                        return
 
                     try:
                         click.auto_click(driver, config.verification_process_button_xpath, 10)
                     except Exception:
                         self.log_from_thread(f"Luồng {idx + 1}: Không thể click vào mục quy trình xác minh")
-                        processed += 1
-                        self.update_progress(processed, total_accounts)
                         continue
-
-                    if not self.is_running:
-                        return
 
                     time.sleep(5)
 
+                    # Start verification process
                     try:
                         element = WebDriverWait(driver, 15).until(
-                            EC.presence_of_element_located(
-                                (By.XPATH, config.start_verification_button_xpath))
+                            EC.presence_of_element_located((By.XPATH, config.start_verification_button_xpath))
                         )
-                        try:
-                            element.click()
-                        except:
-                            driver.execute_script("arguments[0].click();", element)
+                        driver.execute_script("arguments[0].click();", element)
                     except Exception:
                         try:
                             element = WebDriverWait(driver, 5).until(
-                                EC.presence_of_element_located(
-                                    (By.XPATH, config.start_mission_button_xpath))
+                                EC.presence_of_element_located((By.XPATH, config.start_mission_button_xpath))
                             )
-                            try:
-                                element.click()
-                            except:
-                                driver.execute_script("arguments[0].click();", element)
+                            driver.execute_script("arguments[0].click();", element)
                         except Exception:
                             self.log_from_thread(f"Luồng {idx + 1}: Tài khoản {name_customer} có thể đã được xác minh trước đó")
-                            processed += 1
-                            self.update_progress(processed, total_accounts)
+                            # Cập nhật trạng thái trong file bcxm.csv khi tài khoản đã được xác minh
+                            script_dir = os.path.dirname(os.path.abspath(__file__))
+                            template_path = os.path.join(script_dir, 'bcxm.csv')
+
+                            with self.file_lock:
+                                try:
+                                    df = pd.read_csv(template_path)
+                                    mask = (df['Mã khách hàng'] == ma_khach_hang) & (df['Tài khoản'] == name_customer)
+                                    df.loc[mask, 'Trạng thái xác minh'] = 1
+                                    df.to_csv(template_path, index=False)
+                                    self.increment_verified_count()
+                                except Exception:
+                                    self.log_from_thread(f"Luồng {idx + 1}: Không thể cập nhật trạng thái xác minh cho tài khoản {name_customer}")
                             continue
 
-                    if not self.is_running:
-                        return
-
+                    # Check boxes and save
                     time.sleep(3)
-
                     try:
                         click.auto_click(driver, config.check_box_1_xpath, 5)
                     except Exception:
                         pass
-
-                    if not self.is_running:
-                        return
-
-                    time.sleep(1)
 
                     try:
                         click.auto_click(driver, config.check_box_2_xpath, 5)
                     except Exception:
                         pass
 
-                    if not self.is_running:
-                        return
+                    time.sleep(5)
 
                     try:
                         element = WebDriverWait(driver, 30).until(
-                            EC.element_to_be_clickable(
-                                (By.XPATH, config.save_and_continue_button_xpath))
+                            EC.element_to_be_clickable((By.XPATH, config.save_and_continue_button_xpath))
                         )
-                        try:
-                            element.click()
-                        except:
-                            driver.execute_script("arguments[0].click();", element)
+                        driver.execute_script("arguments[0].click();", element)
                     except Exception:
                         self.log_from_thread(f"Luồng {idx + 1}: Không thể nhấn nút lưu và tiếp tục cho {name_customer}")
-                        self.update_progress(processed, total_accounts)
                         continue
 
-                    if not self.is_running:
-                        return
-
-                    # After successful verification, update bcxm.csv
+                    # Update verification status
                     script_dir = os.path.dirname(os.path.abspath(__file__))
                     template_path = os.path.join(script_dir, 'bcxm.csv')
 
-                    try:
-                        with self.file_lock:
+                    with self.file_lock:
+                        try:
                             df = pd.read_csv(template_path)
                             mask = (df['Mã khách hàng'] == ma_khach_hang) & (df['Tài khoản'] == name_customer)
                             df.loc[mask, 'Trạng thái xác minh'] = 1
                             df.to_csv(template_path, index=False)
-                    except Exception:
-                        self.log_from_thread(f"Luồng {idx + 1}: Không thể cập nhật trạng thái xác minh")
+                        except Exception:
+                            self.log_from_thread(f"Luồng {idx + 1}: Không thể cập nhật trạng thái xác minh")
 
                     self.log_from_thread(f"Luồng {idx + 1}: Đã xác minh tài khoản {name_customer} thành công")
-                    processed += 1
                     self.increment_verified_count()
-                    self.update_status()
-                    self.update_progress(processed, total_accounts)
                     time.sleep(30)
 
-                except Exception:
-                    self.log_from_thread(f"Luồng {idx + 1}: Không thể hoàn tất xác minh cho tài khoản {name_customer}")
-                    if not self.is_running:
-                        return
-                    processed += 1
-                    self.update_progress(processed, total_accounts)
+                except Exception as e:
+                    self.log_from_thread(f"Luồng {idx + 1}: Lỗi khi xác minh tài khoản {name_customer}: {str(e)}")
+                    continue
 
             self.log_from_thread(f"Luồng {idx + 1}: Đã hoàn tất xác minh tất cả các tài khoản được giao")
 
-        except Exception:
-            self.log_from_thread(f"Luồng {idx + 1}: Lỗi không xác định")
+            # Kiểm tra xem đây có phải là thread cuối cùng không
+            with self.driver_lock:
+                self.drivers.remove(driver)
+                if not self.drivers:  # Nếu không còn driver nào đang chạy
+                    self.root.after(0, lambda: self.reset_ui_after_completion())
+
+        except Exception as e:
+            self.log_from_thread(f"Luồng {idx + 1}: Lỗi không xác định: {str(e)}")
 
         finally:
-            # Đóng trình duyệt khi hoàn tất
             try:
                 driver.quit()
                 with self.driver_lock:
@@ -1048,6 +996,14 @@ class GoogleAdsVerificationApp:
             self.root.geometry(f"{self.EXPANDED_WIDTH}x{self.EXPANDED_HEIGHT}")
             self.collapse_button.config(text="Thu gọn")
         self.is_collapsed = not self.is_collapsed
+
+    def reset_ui_after_completion(self):
+        """Reset UI elements after all verification threads complete"""
+        self.is_running = False
+        self.start_btn.config(state='normal')
+        self.confirm_btn.config(state='disabled')
+        self.status_label.config(text="Đã hoàn thành")
+        self.confirmation_received.clear()
 
 
 if __name__ == "__main__":

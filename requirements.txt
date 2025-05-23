@@ -4,4 +4,3 @@ undetected-chromedriver
 psutil
 screeninfo
 numpy
-tkinter
