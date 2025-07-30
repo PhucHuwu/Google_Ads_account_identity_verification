@@ -380,8 +380,8 @@ class GoogleAdsVerificationApp:
         """
         Tải dữ liệu xác minh từ file bcxm.csv nếu tồn tại, cập nhật bảng và trạng thái.
         """
-        script_dir = os.path.dirname(os.path.abspath(__file__))
-        template_path = os.path.join(script_dir, 'bcxm.csv')
+        # Sử dụng đường dẫn tương đối giống như Account_id.csv
+        template_path = 'bcxm.csv'
 
         if os.path.exists(template_path):
             try:
@@ -539,8 +539,8 @@ class GoogleAdsVerificationApp:
             uploaded_data = pd.read_csv(file_path, skiprows=2, encoding='utf-8')
             uploaded_data.columns = uploaded_data.columns.str.strip()
 
-            script_dir = os.path.dirname(os.path.abspath(__file__))
-            template_path = os.path.join(script_dir, 'bcxm.csv')
+            # Sử dụng đường dẫn tương đối giống như Account_id.csv
+            template_path = 'bcxm.csv'
 
             template_df = pd.DataFrame({
                 'Mã khách hàng': uploaded_data['Mã khách hàng'],
@@ -562,8 +562,8 @@ class GoogleAdsVerificationApp:
             uploaded_data = pd.read_csv(file_path, skiprows=2, encoding='utf-8')
             uploaded_data.columns = uploaded_data.columns.str.strip()
 
-            script_dir = os.path.dirname(os.path.abspath(__file__))
-            template_path = os.path.join(script_dir, 'bcxm.csv')
+            # Sử dụng đường dẫn tương đối giống như Account_id.csv
+            template_path = 'bcxm.csv'
 
             if os.path.exists(template_path):
                 existing_data = pd.read_csv(template_path)
@@ -617,8 +617,8 @@ class GoogleAdsVerificationApp:
         self.mcc_count_label.config(text=str(selected_mcc_count))
 
         try:
-            script_dir = os.path.dirname(os.path.abspath(__file__))
-            template_path = os.path.join(script_dir, 'bcxm.csv')
+            # Sử dụng đường dẫn tương đối giống như Account_id.csv
+            template_path = 'bcxm.csv'
             if os.path.exists(template_path):
                 df = pd.read_csv(template_path)
                 total_accounts = len(df)
@@ -700,8 +700,8 @@ class GoogleAdsVerificationApp:
             return
 
         # Đọc file dữ liệu xác minh
-        script_dir = os.path.dirname(os.path.abspath(__file__))
-        template_path = os.path.join(script_dir, 'bcxm.csv')
+        # Sử dụng đường dẫn tương đối giống như Account_id.csv
+        template_path = 'bcxm.csv'
 
         try:
             verification_df = pd.read_csv(template_path)
@@ -974,8 +974,8 @@ class GoogleAdsVerificationApp:
                     if not verification_started:
                         # Tài khoản có thể đã được xác minh
                         self.log_from_thread(f"Luồng {idx + 1}: Tài khoản {name_customer} có thể đã được xác minh trước đó", "red")
-                        script_dir = os.path.dirname(os.path.abspath(__file__))
-                        template_path = os.path.join(script_dir, 'bcxm.csv')
+                        # Sử dụng đường dẫn tương đối giống như Account_id.csv
+                        template_path = 'bcxm.csv'
 
                         # Cập nhật trạng thái đã xác minh
                         with self.file_lock:
@@ -1013,8 +1013,8 @@ class GoogleAdsVerificationApp:
                         self.log_from_thread(f"Luồng {idx + 1}: Đã hoàn tất quy trình xác minh cho {name_customer}", "green")
 
                     # Cập nhật trạng thái xác minh thành công
-                    script_dir = os.path.dirname(os.path.abspath(__file__))
-                    template_path = os.path.join(script_dir, 'bcxm.csv')
+                    # Sử dụng đường dẫn tương đối giống như Account_id.csv
+                    template_path = 'bcxm.csv'
 
                     with self.file_lock:
                         try:
@@ -1153,8 +1153,8 @@ class GoogleAdsVerificationApp:
         """
         with self.verified_count_lock:
             try:
-                script_dir = os.path.dirname(os.path.abspath(__file__))
-                template_path = os.path.join(script_dir, 'bcxm.csv')
+                # Sử dụng đường dẫn tương đối giống như Account_id.csv
+                template_path = 'bcxm.csv'
                 df = pd.read_csv(template_path)
                 total_accounts = len(df)
                 verified_count = len(df[df['Trạng thái xác minh'] == 1])
