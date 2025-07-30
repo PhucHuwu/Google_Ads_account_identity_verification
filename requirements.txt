@@ -1,6 +1,7 @@
-pandas
-selenium
-undetected-chromedriver
-psutil
-screeninfo
-numpy
+pandas>=2.3.1
+selenium>=4.34.2
+undetected-chromedriver>=3.5.5
+psutil>=7.0.0
+screeninfo>=0.8.1
+numpy>=1.26.4,<2.0.0
+openpyxl>=3.1.5
