@@ -63,7 +63,7 @@ Công cụ được thiết kế để giải quyết vấn đề xác minh danh
 
 **Liên hệ ở thông tin liên hệ để được hướng dẫn sử dụng chi tiết**
 
-## Cấu Trúc Dự Án
+## Cấu Trúc Thư Mục Dự Án
 
 ```
 GOOGLE_ADS_ACCOUNT_IDENTITY/
