@@ -147,6 +147,8 @@ def handle_task2(driver, idx, name_customer, log_callback):
             log_callback(f"Luồng {idx + 1}: Không thể chọn radio button thứ 2: {str(e)}", "red")
             return False
 
+        time.sleep(0.5)
+
         # Chọn radio button thứ 4
         try:
             radio4 = WebDriverWait(driver, 15).until(
@@ -247,7 +249,7 @@ def handle_task3(driver, idx, name_customer, log_callback):
             log_callback(f"Luồng {idx + 1}: Không thể chọn radio button Task 3: {str(e)}", "red")
             return False
 
-        time.sleep(2)
+        time.sleep(3)
 
         # Nhấn nút "Gửi câu trả lời"
         try:
@@ -257,8 +259,17 @@ def handle_task3(driver, idx, name_customer, log_callback):
             driver.execute_script("arguments[0].click();", submit_button)
             log_callback(f"Luồng {idx + 1}: Đã nhấn nút 'Gửi câu trả lời' Task 3", "green")
         except Exception as e:
-            log_callback(f"Luồng {idx + 1}: Không thể nhấn nút 'Gửi câu trả lời' Task 3: {str(e)}", "red")
-            return False
+            # Thử cách khác nếu cách đầu tiên thất bại
+            try:
+                # Thử tìm nút bằng text content trực tiếp
+                submit_button = WebDriverWait(driver, 10).until(
+                    EC.element_to_be_clickable((By.XPATH, "//material-button[.//div[text()='Gửi câu trả lời']]"))
+                )
+                driver.execute_script("arguments[0].click();", submit_button)
+                log_callback(f"Luồng {idx + 1}: Đã nhấn nút 'Gửi câu trả lời' Task 3 (cách thay thế)", "green")
+            except Exception as e2:
+                log_callback(f"Luồng {idx + 1}: Không thể nhấn nút 'Gửi câu trả lời' Task 3: {str(e)} - {str(e2)}", "red")
+                return False
 
         time.sleep(3)
         log_callback(f"Luồng {idx + 1}: Task 3 hoàn thành cho tài khoản {name_customer}", "green")
