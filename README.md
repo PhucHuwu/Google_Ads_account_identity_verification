@@ -66,35 +66,46 @@ Công cụ được thiết kế để giải quyết vấn đề xác minh danh
 ## Cấu Trúc Dự Án
 
 ```
-Google_Ads_account_identity_verification/
-├── main.py                          # Điểm khởi đầu chương trình
-├── config.py                        # Cấu hình XPath và các hằng số
-├── click.py                         # Tiện ích tự động click
-├── requirements.txt                 # Danh sách thư viện Python
+GOOGLE_ADS_ACCOUNT_IDENTITY/
+├── app/                            # Module ứng dụng chính
+│   ├── __init__.py
+│   ├── app_initializer.py          # Khởi tạo ứng dụng
+│   ├── google_ads_app.py           # Class ứng dụng chính
+│   └── thread_manager.py           # Quản lý luồng
+│ 
+├── browser/                        # Module xử lý trình duyệt
+│   ├── __init__.py
+│   ├── driver_manager.py           # Quản lý Chrome driver
+│   ├── task_handlers.py            # Xử lý các nhiệm vụ cụ thể
+│   └── verification_processor.py   # Xử lý quy trình xác minh
+│ 
+├── data/                           # Module quản lý dữ liệu
+│   ├── __init__.py
+│   ├── account_manager.py          # Quản lý tài khoản MCC
+│   ├── file_handler.py             # Xử lý file CSV
+│   └── verification_manager.py     # Quản lý dữ liệu xác minh
+│ 
+├── ui/                             # Module giao diện người dùng
+│   ├── __init__.py
+│   ├── event_handlers.py           # Xử lý sự kiện
+│   ├── status_updater.py           # Cập nhật trạng thái
+│   ├── tab_setup.py                # Thiết lập các tab
+│   ├── table_managers.py           # Quản lý bảng dữ liệu
+│   └── widget_creator.py           # Tạo các widget
+│ 
+├── utils/                          # Module tiện ích
+│   ├── __init__.py
+│   ├── chrome_manager.py           # Quản lý Chrome
+│   ├── logging.py                  # Hệ thống log
+│   └── validation.py               # Xác thực dữ liệu
+│ 
 ├── Account_id.csv                  # Dữ liệu tài khoản MCC
 ├── bcxm.csv                        # File báo cáo xác minh danh tính
-├── app/                            # Module ứng dụng chính
-│   ├── google_ads_app.py          # Class ứng dụng chính
-│   ├── app_initializer.py         # Khởi tạo ứng dụng
-│   └── thread_manager.py           # Quản lý luồng
-├── browser/                        # Module xử lý trình duyệt
-│   ├── driver_manager.py          # Quản lý Chrome driver
-│   ├── verification_processor.py  # Xử lý quy trình xác minh
-│   └── task_handlers.py           # Xử lý các nhiệm vụ cụ thể
-├── data/                           # Module quản lý dữ liệu
-│   ├── account_manager.py         # Quản lý tài khoản MCC
-│   ├── file_handler.py            # Xử lý file CSV
-│   └── verification_manager.py    # Quản lý dữ liệu xác minh
-├── ui/                             # Module giao diện người dùng
-│   ├── widget_creator.py          # Tạo các widget
-│   ├── tab_setup.py               # Thiết lập các tab
-│   ├── table_managers.py          # Quản lý bảng dữ liệu
-│   ├── event_handlers.py          # Xử lý sự kiện
-│   └── status_updater.py          # Cập nhật trạng thái
-└── utils/                          # Module tiện ích
-    ├── chrome_manager.py          # Quản lý Chrome
-    ├── logging.py                 # Hệ thống log
-    └── validation.py              # Xác thực dữ liệu
+├── click.py                        # Tiện ích tự động click
+├── config.py                       # Cấu hình XPath và các hằng số
+├── main.py                         # Điểm khởi đầu chương trình
+├── README.md                       # Tài liệu dự án
+└── requirements.txt                # Danh sách thư viện Python
 ```
 
 ## Tính Năng Kỹ Thuật
@@ -183,4 +194,4 @@ Google_Ads_account_identity_verification/
 
 ---
 
-_Công cụ này được phát triển để hỗ trợ các agency và marketer trong việc quản lý nhiều tài khoản Google Ads một cách hiệu quả.
+\_Công cụ này được phát triển để hỗ trợ các agency và marketer trong việc quản lý nhiều tài khoản Google Ads một cách hiệu quả.
