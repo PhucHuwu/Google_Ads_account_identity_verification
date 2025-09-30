@@ -194,4 +194,4 @@ GOOGLE_ADS_ACCOUNT_IDENTITY/
 
 ---
 
-\_Công cụ này được phát triển để hỗ trợ các agency và marketer trong việc quản lý nhiều tài khoản Google Ads một cách hiệu quả.
+\_Công cụ này được phát triển để hỗ trợ các agency và marketer trong việc quản lý nhiều tài khoản Google Ads một cách hiệu quả._
